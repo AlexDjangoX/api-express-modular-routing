@@ -8,11 +8,9 @@ let { books } = require("../../data.js");
 router.get("/", (req, res) => {
   res.json({ books });
 });
-router.get("/", (req, res) => {
-  res.json({ books });
-});
+
 router.get("/:id", (req, res) => {
-  const book = books.find((book) => book.id === +req.params.id);
+  const book = books.find((book) => book.id === Number(req.params.id));
   res.json({ book });
 });
 
@@ -43,21 +41,25 @@ router.post("/", (req, res) => {
 });
 
 router.delete("/:id", (req, res) => {
-  const book = books.find((book) => book.id === +req.params.id);
-  books = books.filter((book) => book.id !== +req.params.id);
+  const book = books.find((book) => book.id === Number(req.params.id));
+  books = books.filter((book) => book.id !== Number(req.params.id));
   res.json({ book });
 });
 
 router.put("/:id", (req, res) => {
   let foundIndex = books.findIndex((book) => book.id === +req.params.id);
-  books[foundIndex] = { ...req.body, id: +req.params.id };
+  books[foundIndex] = { ...req.body, id: Number(req.params.id) };
   res.json({ ...books[foundIndex] });
 });
 
 router.patch("/:id", (req, res) => {
-  const [key] = Object.keys(req.body);
-  let foundIndex = books.findIndex((book) => book.id === +req.params.id);
-  books[foundIndex][key] = req.body[key];
+  const keys = Object.keys(req.body);
+  let foundIndex = books.findIndex((book) => book.id === Number(req.params.id));
+  keys.forEach((key) => {
+    films[foundIndex][key] = req.body[key];
+    console.log("60...", books[foundIndex]);
+    console.log("61...", books[foundIndex][key]);
+  });
   res.json({ ...books[foundIndex] });
 });
 
